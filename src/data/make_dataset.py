@@ -90,6 +90,7 @@ del gyr_df["elapsed (s)"]
 # --------------------------------------------------------------
 # Turn into function
 # --------------------------------------------------------------
+
 files = glob("../../data/raw/MetaMotion/*.csv")
 
 
@@ -152,9 +153,9 @@ data_merged.columns = [
     "gyr_x",
     "gyr_y",
     "gyr_z",
+    "participant",
     "label",
     "category",
-    "participant",
     "set",
 ]
 
@@ -186,9 +187,9 @@ data_resambled = pd.concat(
     [df.resample(rule="200ms").apply(sampling).dropna() for df in days]
 )
 
-data_resambled.info()
 
-data_resambled["set"] = data_resambled["set"].astype("int")
+data_resambled["set"] = data_resambled["set"].astype("int64")
+data_resambled.info()
 # --------------------------------------------------------------
 # Export dataset
 # --------------------------------------------------------------

@@ -111,7 +111,7 @@ count_reps(dead_set, cutoff=0.4)
 # Create benchmark dataframe
 # --------------------------------------------------------------
 df["reps"] = df["category"].apply(lambda x: 5 if x == "heavy" else 10)
-rep_df = df.groubby(["label", "category", "set"])["reps"].max().reset_index()
+rep_df = df.groupby(["label", "category", "set"])["reps"].max().reset_index()
 rep_df["reps_pred"] = 0
 
 for s in df["set"].unique():
@@ -121,13 +121,13 @@ for s in df["set"].unique():
     cutoff = 0.4
 
     if subset["label"].iloc[0] == "squat":
-        cutoff = 0.35
+        cutoff = 0.50
 
     if subset["label"].iloc[0] == "row":
-        cutoff = 0.65
+        cutoff = 0.50
 
     if subset["label"].iloc[0] == "ohp":
-        cutoff = 0.35
+        cutoff = 0.50
 
     reps = count_reps(subset, cutoff=cutoff, column=column)
     rep_df.loc[rep_df["set"] == s, "reps_pred"] = reps
@@ -137,4 +137,4 @@ rep_df
 # Evaluate the results
 # --------------------------------------------------------------
 error = mean_absolute_error(rep_df["reps"], rep_df["reps_pred"]).round(2)
-rep_df.groubby(["label", "category"])["reps", "reps_pred"].mean().plot.bar()
+rep_df.groupby(["label", "category"])["reps", "reps_pred"].mean().plot.bar()
